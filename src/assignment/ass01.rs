@@ -84,26 +84,12 @@ pub fn price(furniture : &HashMap<String, f32>, f_name : String) -> f32 {
     }
 }
 
-pub fn append_main() {
-    let s : String = String::from("banano");
-    res = append(s);
-
-    println!("Original: {}, Appended: {}", s, res);
-}
-
-pub fn append(s : String) -> String {
-    let mut res = s;
-    res.push_str("foobar");
-
-    return res;
-}
-
 //Questa sotto non funziona perché abbiamo spostato il valore di s, ma sembra volessero proprio questo
 pub fn append_main() {
     let s : String = String::from("banano");
     let res = append(s);
 
-    println!("Original: {}, Appended: {}", s, res);
+    println!("Appended: {}", res);
 }
 
 pub fn append(s : String) -> String {
