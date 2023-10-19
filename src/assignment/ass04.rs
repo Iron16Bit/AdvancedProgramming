@@ -201,3 +201,12 @@ impl<'a> SplitCustom<'a, LinkedList<f64>> for LinkedList<f64> {
 //     linked_list.push_back(9.0);
 //     println!("{:?}", linked_list.split_trait());
 // }
+
+//Es7
+pub fn skip_prefix<'a>(telephone_number: &'a str, prefix: &str) -> &'a str {
+    let ret = telephone_number.strip_prefix(prefix);
+    match ret {
+        None => {return telephone_number}
+        Some(_) => {return ret.unwrap()}
+    }
+}

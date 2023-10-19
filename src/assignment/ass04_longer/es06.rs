@@ -112,7 +112,7 @@ impl<T> Add<&dyn GetArea<T>> for Area {
     }
 }
 
-pub fn sum_area<T>(a: &[dyn GetArea<T>]) -> Area {
+pub fn sum_area<T>(a: &[&dyn GetArea<T>]) -> Area {
     let mut val : f32 = 0.0;
     for f in a.iter() {
         val += f.get_area().area;
