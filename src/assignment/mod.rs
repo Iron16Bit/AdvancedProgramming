@@ -5,3 +5,4 @@ pub mod ass03;
 pub mod ass04;
 
 pub mod ass04_longer;
+pub mod ass05;
