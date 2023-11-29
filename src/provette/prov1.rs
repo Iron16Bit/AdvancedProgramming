@@ -237,7 +237,7 @@ mod unumber {
 
 mod hashmaps {
     use std::collections::HashMap;
-    use crate::unumber::Unumber;
+    use crate::provette::prov1::unumber::Unumber;
 
     pub struct Maps {
         pub map: HashMap<Unumber, String>,
@@ -246,7 +246,7 @@ mod hashmaps {
 
 pub mod module {
     use std::collections::HashMap;
-    use crate::unumber::Unumber;
+    use crate::provette::prov1::unumber::Unumber;
     use super::hashmaps;
     pub fn string_to_tuple(m: hashmaps::Maps) -> HashMap<Unumber, (Unumber, String)> {
         let mut ret = HashMap::new();

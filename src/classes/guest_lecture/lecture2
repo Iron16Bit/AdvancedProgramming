@@ -1,0 +1,58 @@
+Good resources:
+    - lib.rs / crates.io -> Find libraries
+    - docs.rs -> documentation
+    - play.rust-lang.org -> playground where you can write, share and execute
+    - std.rs -> searches for you in the standard library
+
+Tooling:
+    - cargo add -> adds dependencies to the project, finding it for you
+    - cargo check -> checks your project for problems without building it
+    - cargo tree -> shows the tree of dependencies
+    - cargo outdated -> checks if your dependencies are outdated
+    - cargo outdated -R -> only checks the root dependencies (those you added)
+    - cargo clippy -> just like Microsoft's clippy
+    - cargo fix -> should fix your code (before doing so, you must commit)
+    - cargo fuzz -> fuzzing: a technique for testing your code. Generates inputs as fast as possible, checking if the application crashes
+
+    - miri -> mir interpreter (checks code's correctness, especially unsafe Rust)
+    - loom -> checks the same things as miri, but for multithreaded programs
+
+Libraries:
+    - parking_lot -> mutex without poisoning (if a lock stops existing before it's unlocked, the whole program panics. Avoids deadlock)
+    - static assertion -> assert at compile time
+    - yansi -> adds color
+
+Deref coercion:
+    - If T implements Deref<Target U> and v is a value of type T, *v can access the methods of U
+
+Builder pattern:
+    - a "builder" type that allows to construct a value
+
+    impl Builder {
+        fn new() -> Builder {
+            Builder { filed: None }
+        }
+
+        fn field(mut self, field: T) -> Self {
+            self.field = Some(field);
+            self
+        }
+
+        fn finish(self) -> Built {
+            field: self.field.unwrap_or(0)
+        }
+    }
+
+    fn main() {
+        let built = Builder::new()
+                    .field(5)
+                    .finish();
+
+        -- equal to --
+
+        let built = Built {
+            field: 5
+        }
+
+        //Main difference: if you have to manipulate the values in the field while instancing the value, you can do it through the builder
+    }
