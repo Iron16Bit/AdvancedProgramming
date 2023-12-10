@@ -6,7 +6,7 @@ pub fn is_it_luhn(n: String) -> bool {
         return false;
     }
 
-    let mut vec : Vec<i32> = Vec::new();
+    let mut vec: Vec<i32> = Vec::new();
     for c in n.chars() {
         if c != ' ' {
             vec.push(c.to_string().parse::<i32>().unwrap());
@@ -14,9 +14,9 @@ pub fn is_it_luhn(n: String) -> bool {
     }
 
     for i in 0..vec.len() {
-        if (vec.len()-i)%2 == 0 {
+        if (vec.len() - i) % 2 == 0 {
             let mut tmp = vec.get_mut(i).unwrap();
-            *tmp*=2;
+            *tmp *= 2;
             if *tmp > 9 {
                 *tmp -= 9;
             }
@@ -33,7 +33,7 @@ pub fn is_it_luhn(n: String) -> bool {
     }
     //println!("{}", tot);
 
-    if tot%10 != 0 {
+    if tot % 10 != 0 {
         return false;
     }
 
@@ -46,12 +46,12 @@ enum Fuel {
     Gasoline,
     LPG,
     Methane,
-    Electric
+    Electric,
 }
 
 //#[derive(Debug)]
 pub struct IpV4 {
-    pub values : [u32; 3],
+    pub values: [u32; 3],
 }
 
 pub trait Ip4 {
@@ -86,7 +86,11 @@ impl Ip4 for IpV4 {
 
 impl fmt::Display for IpV4 {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "{}.{}.{}", self.values[0], self.values[1], self.values[2])
+        write!(
+            f,
+            "{}.{}.{}",
+            self.values[0], self.values[1], self.values[2]
+        )
     }
 }
 
@@ -115,7 +119,7 @@ impl Ip6 for IpV6 {
         let mut i = 0;
         while i < 8 {
             self.values[i] = arr[i];
-            i+=1;
+            i += 1;
         }
     }
 }
@@ -147,7 +151,7 @@ impl fmt::Display for IpV6 {
 }
 
 struct Point {
-    x : f64,
-    y : f64,
-    z : f64,
+    x: f64,
+    y: f64,
+    z: f64,
 }

@@ -1,4 +1,4 @@
-use std::fmt::{Display, Formatter, write};
+use std::fmt::{write, Display, Formatter};
 
 pub struct Chair<'a> {
     pub(crate) color: &'a str,
@@ -17,7 +17,7 @@ trait Object {
 
 impl Object for Chair<'_> {
     fn build(&self) -> &str {
-        return "Chair has been built"
+        return "Chair has been built";
     }
 
     fn get_quantity(&self) -> String {
@@ -30,7 +30,7 @@ impl Object for Chair<'_> {
 
 impl Object for Wardrobe<'_> {
     fn build(&self) -> &str {
-        return "Wardrobe has been built"
+        return "Wardrobe has been built";
     }
 
     fn get_quantity(&self) -> String {
@@ -45,7 +45,11 @@ impl Display for Chair<'_> {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         match self.quantity {
             0 => {
-                write!(f, "It's so lonely, there isn't a single {} chair", self.color)
+                write!(
+                    f,
+                    "It's so lonely, there isn't a single {} chair",
+                    self.color
+                )
             }
             1 => {
                 write!(f, "Wow! There's a {} chair", self.color)
@@ -61,7 +65,11 @@ impl Display for Wardrobe<'_> {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         match self.quantity {
             0 => {
-                write!(f, "It's so lonely, there isn't a single {} wardrobe", self.color)
+                write!(
+                    f,
+                    "It's so lonely, there isn't a single {} wardrobe",
+                    self.color
+                )
             }
             1 => {
                 write!(f, "Wow! There's a {} wardrobe", self.color)

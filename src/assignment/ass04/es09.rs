@@ -62,61 +62,65 @@ impl Auth for User {
 
 impl Default for Actions {
     fn default() -> Self {
-        let mut h : HashMap<Permission, bool> = HashMap::new();
+        let mut h: HashMap<Permission, bool> = HashMap::new();
         h.insert(Permission::READ, false);
         h.insert(Permission::WRITE, false);
         h.insert(Permission::EXECUTE, false);
-        return Actions{action: String::new(), permission: h};
+        return Actions {
+            action: String::new(),
+            permission: h,
+        };
     }
 }
 
 impl Actions {
     fn new(action: String, read: bool, write: bool, execute: bool) -> Self {
-        let mut h : HashMap<Permission, bool> = HashMap::new();
+        let mut h: HashMap<Permission, bool> = HashMap::new();
         h.insert(Permission::READ, read);
         h.insert(Permission::WRITE, write);
         h.insert(Permission::EXECUTE, execute);
-        return Actions{action: action, permission: h};
+        return Actions {
+            action: action,
+            permission: h,
+        };
     }
 }
 
 impl Default for User {
     fn default() -> Self {
-        let vec : Vec<Actions> = Vec::new();
-        return User{name: String::from("Guest"), role: Role::GUEST, actions: vec};
+        let vec: Vec<Actions> = Vec::new();
+        return User {
+            name: String::from("Guest"),
+            role: Role::GUEST,
+            actions: vec,
+        };
     }
 }
 
 impl User {
     fn change_role(&mut self, role: Role) -> Result<(), String> {
         match self.role {
-            Role::GUEST => {
-                match role {
-                    Role::GUEST => {
-                        return Ok(())
-                    }
-                    Role::USER => {
-                        return Err("Not valid".to_string());
-                    }
-                    Role::ADMIN => {
-                        return Err("Not valid".to_string());
-                    }
+            Role::GUEST => match role {
+                Role::GUEST => return Ok(()),
+                Role::USER => {
+                    return Err("Not valid".to_string());
                 }
-            }
-            Role::USER => {
-                match role {
-                    Role::GUEST => {
-                        self.role = role;
-                        return Ok(());
-                    }
-                    Role::USER => {
-                        return Ok(());
-                    }
-                    Role::ADMIN => {
-                        return Err("Not valid".to_string());
-                    }
+                Role::ADMIN => {
+                    return Err("Not valid".to_string());
                 }
-            }
+            },
+            Role::USER => match role {
+                Role::GUEST => {
+                    self.role = role;
+                    return Ok(());
+                }
+                Role::USER => {
+                    return Ok(());
+                }
+                Role::ADMIN => {
+                    return Err("Not valid".to_string());
+                }
+            },
             Role::ADMIN => {
                 self.role = role;
                 return Ok(());
@@ -125,7 +129,12 @@ impl User {
     }
 }
 
-pub fn sudo_change_permission(user: &mut User, string: String, permission: Permission, value: bool) {
+pub fn sudo_change_permission(
+    user: &mut User,
+    string: String,
+    permission: Permission,
+    value: bool,
+) {
     for a in user.actions.iter_mut() {
         if a.action == string {
             a.permission.insert(permission, value);
@@ -135,8 +144,10 @@ pub fn sudo_change_permission(user: &mut User, string: String, permission: Permi
 
 #[cfg(test)]
 mod tests {
+    use crate::assignment::ass04::es09::{
+        sudo_change_permission, Actions, Auth, Permission, Role, User,
+    };
     use std::collections::HashMap;
-    use crate::assignment::ass04::es09::{Actions, Auth, Permission, Role, sudo_change_permission, User};
 
     fn create_user_action_for_testing() -> Vec<Actions> {
         vec![
@@ -146,7 +157,7 @@ mod tests {
                     (Permission::READ, true),
                     (Permission::WRITE, true),
                     (Permission::EXECUTE, false),
-                ])
+                ]),
             },
             Actions {
                 action: "w".to_owned(),
@@ -154,7 +165,7 @@ mod tests {
                     (Permission::WRITE, true),
                     (Permission::READ, false),
                     (Permission::EXECUTE, false),
-                ])
+                ]),
             },
             Actions {
                 action: "r".to_owned(),
@@ -162,7 +173,7 @@ mod tests {
                     (Permission::WRITE, false),
                     (Permission::READ, true),
                     (Permission::EXECUTE, false),
-                ])
+                ]),
             },
             Actions {
                 action: "rwx".to_owned(),
@@ -170,15 +181,15 @@ mod tests {
                     (Permission::WRITE, true),
                     (Permission::READ, true),
                     (Permission::EXECUTE, true),
-                ])
-            }
+                ]),
+            },
         ]
     }
     fn create_admin_test() -> User {
         User {
             name: "Admin".to_owned(),
             role: Role::ADMIN,
-            actions: create_user_action_for_testing()
+            actions: create_user_action_for_testing(),
         }
     }
 
@@ -186,7 +197,7 @@ mod tests {
         User {
             name: "User".to_owned(),
             role: Role::USER,
-            actions: create_user_action_for_testing()
+            actions: create_user_action_for_testing(),
         }
     }
     #[test]
@@ -268,7 +279,7 @@ mod tests {
         permission.insert(Permission::WRITE, false);
         permission.insert(Permission::EXECUTE, false);
         let action = "".to_owned();
-        assert_eq!(Actions{ action, permission }, Actions::default());
+        assert_eq!(Actions { action, permission }, Actions::default());
     }
 
     #[test]
@@ -279,7 +290,10 @@ mod tests {
         permission.insert(Permission::READ, true);
         permission.insert(Permission::WRITE, true);
         permission.insert(Permission::EXECUTE, false);
-        assert_eq!(Actions{ action, permission }, Actions::new("rw".to_string(), read, write, execute));
+        assert_eq!(
+            Actions { action, permission },
+            Actions::new("rw".to_string(), read, write, execute)
+        );
     }
 
     #[test]
@@ -288,7 +302,14 @@ mod tests {
         let role = Role::GUEST;
         let actions = Vec::new();
 
-        assert_eq!(User { name, role, actions }, User::default());
+        assert_eq!(
+            User {
+                name,
+                role,
+                actions
+            },
+            User::default()
+        );
     }
 
     #[test]
@@ -348,25 +369,32 @@ mod tests {
         User {
             name: "test sudo".to_string(),
             role: Role::GUEST,
-            actions: vec! [Actions{
+            actions: vec![Actions {
                 action: "no permission".to_string(),
                 permission: HashMap::from([
                     (Permission::READ, false),
                     (Permission::WRITE, false),
-                    (Permission::EXECUTE, false)
-                ])
-            }]
+                    (Permission::EXECUTE, false),
+                ]),
+            }],
         }
     }
 
     #[test]
     fn sudo_change_permission_write_true() {
         let mut user = create_guest_for_testing_sudo();
-        sudo_change_permission(&mut user, "no permission".to_string(), Permission::WRITE, true);
-        assert_eq!(*user.actions[0]
-            .permission
-            .get(&Permission::WRITE)
-            .expect("Key WRITE always present in action."), true)
+        sudo_change_permission(
+            &mut user,
+            "no permission".to_string(),
+            Permission::WRITE,
+            true,
+        );
+        assert_eq!(
+            *user.actions[0]
+                .permission
+                .get(&Permission::WRITE)
+                .expect("Key WRITE always present in action."),
+            true
+        )
     }
-
 }

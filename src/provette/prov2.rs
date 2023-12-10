@@ -29,7 +29,7 @@ trait CloneAndDouble {
 
 impl<T: Clone + Add<Output = T>> CloneAndDouble for T {
     fn clone_and_double(&self) -> Self {
-        return self.clone() + self.clone()
+        return self.clone() + self.clone();
     }
 }
 
@@ -84,11 +84,11 @@ struct BinIter {
 
 impl BinIter {
     fn new(n: u128, l: usize) -> Self {
-        return BinIter{n, l, counter: 0};
+        return BinIter { n, l, counter: 0 };
     }
 }
 
-impl Iterator for BinIter{
+impl Iterator for BinIter {
     type Item = bool;
 
     fn next(&mut self) -> Option<Self::Item> {
@@ -96,7 +96,7 @@ impl Iterator for BinIter{
             self.counter += 1;
             let val = self.n % 2;
             self.n = (self.n - val) / 2;
-            return Some(if val == 1 {true} else {false})
+            return Some(if val == 1 { true } else { false });
         }
         None
     }
@@ -104,22 +104,22 @@ impl Iterator for BinIter{
 
 pub fn test1() {
     for n in BinIter::new(4641312598359562305508665788689819792, 128) {
-        print!("{}", if n {1} else {0})
+        print!("{}", if n { 1 } else { 0 })
     }
     println!();
 
     for n in BinIter::new(15, 4) {
-        print!("{}", if n {1} else {0})
+        print!("{}", if n { 1 } else { 0 })
     }
     println!();
 
     for n in BinIter::new(375, 9) {
-        print!("{}", if n {"*"} else {"_"})
+        print!("{}", if n { "*" } else { "_" })
     }
     println!();
 
     for n in BinIter::new(8978540, 16) {
-        print!("{}", if n {"*"} else {"_"})
+        print!("{}", if n { "*" } else { "_" })
     }
 }
 
@@ -136,31 +136,36 @@ struct List<T> {
     size: usize,
 }
 
-impl<T> PartialEq for Node<T> 
-where T: PartialEq{
+impl<T> PartialEq for Node<T>
+where
+    T: PartialEq,
+{
     fn eq(&self, other: &Self) -> bool {
         self.element == other.element
     }
 }
 
-impl<T> Display for Node<T> 
-where T: Display {
+impl<T> Display for Node<T>
+where
+    T: Display,
+{
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.element)
     }
 }
 
-impl<T> PartialEq for List<T> {
+impl<T> PartialEq for List<T> 
+where T: PartialEq {
     fn eq(&self, other: &Self) -> bool {
         let mut self_iter = self.head.as_ref().map(|node| Rc::clone(node));
         let mut other_iter = other.head.as_ref().map(|node| Rc::clone(node));
 
-        while let (Some(node1), Some(node2)) = (self_iter.iter().clone(), other_iter.iter().clone()) {
-            if node1.borrow().element != node2.borrow().element {
+        while let (Some(node1), Some(node2)) = (self_iter.clone(), other_iter.clone()) {
+            if node1.borrow_mut().element != node2.borrow_mut().element {
                 return false;
             }
-            self_iter = node1.borrow().next.as_ref().map(|node| Rc::clone(node));
-            other_iter = node2.borrow().next.as_ref().map(|node| Rc::clone(node));
+            self_iter = node1.borrow_mut().next.as_ref().map(|node| Rc::clone(node));
+            other_iter = node2.borrow_mut().next.as_ref().map(|node| Rc::clone(node));
         }
 
         self_iter.is_none() && other_iter.is_none()

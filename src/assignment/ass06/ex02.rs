@@ -18,7 +18,7 @@ struct User {
 
 impl CarDealer {
     fn new(vec: Vec<Car>) -> Self {
-        return CarDealer{catalogue: vec};
+        return CarDealer { catalogue: vec };
     }
 
     fn add_car(&mut self, car: Car) {
@@ -51,7 +51,7 @@ impl CarDealer {
 
     fn end_rental(&mut self, usr: &mut User) {
         if usr.car.is_none() {
-           println!("User has no car");
+            println!("User has no car");
         } else {
             for c in self.catalogue.iter_mut() {
                 if c.model == usr.car.as_ref().unwrap().model {
@@ -66,13 +66,23 @@ impl CarDealer {
 
 impl Default for Car {
     fn default() -> Self {
-        return Car{model: "Fiat".to_string(), year: 2013, price: 100, rent: false};
+        return Car {
+            model: "Fiat".to_string(),
+            year: 2013,
+            price: 100,
+            rent: false,
+        };
     }
 }
 
 impl Car {
     fn new(model: &str, year: u32, price: u32) -> Self {
-        return Car{model: model.to_string(), year, price, rent: false};
+        return Car {
+            model: model.to_string(),
+            year,
+            price,
+            rent: false,
+        };
     }
 }
 
@@ -90,14 +100,14 @@ pub fn test() {
     let car1 = Car::new("Mustang", 2023, 321);
     let car2 = Car::new("Panda", 1980, 20);
     let car3 = Car::new("Mercedes", 2000, 150);
-    let vec : Vec<Car> = vec![car1, car2, car3];
+    let vec: Vec<Car> = vec![car1, car2, car3];
 
     let mut dealer = CarDealer::new(vec);
     dealer.add_car(Car::default());
     dealer.print_cars();
 
     println!("\n");
-    let mut usr = User{car: None};
+    let mut usr = User { car: None };
     usr.print_car();
     dealer.rent_user(&mut usr, "Giovanni");
     dealer.rent_user(&mut usr, "Mustang");

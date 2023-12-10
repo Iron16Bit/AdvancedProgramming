@@ -15,7 +15,9 @@ impl Printable for String {
 }
 
 impl<T> Printable for Vec<T>
-    where T: Printable{
+where
+    T: Printable,
+{
     fn print(&self) {
         for item in self {
             item.print();
@@ -25,7 +27,8 @@ impl<T> Printable for Vec<T>
 }
 
 pub fn print<T>(a: T)
-    where T: Printable {
-
+where
+    T: Printable,
+{
     a.print();
 }

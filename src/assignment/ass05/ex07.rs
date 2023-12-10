@@ -16,14 +16,17 @@ trait Friable {
 
 trait Frier {
     fn fry<T>(&self, obj: &mut T)
-        where
-            T: Friable;
+    where
+        T: Friable;
 }
 
 struct Oven {}
 
 impl Heater for Oven {
-    fn heat<T>(&self, obj: &mut T) where T: Heatable {
+    fn heat<T>(&self, obj: &mut T)
+    where
+        T: Heatable,
+    {
         obj.cook();
     }
 }
@@ -31,7 +34,10 @@ impl Heater for Oven {
 struct Pan {}
 
 impl Frier for Pan {
-    fn fry<T>(&self, obj: &mut T) where T: Friable {
+    fn fry<T>(&self, obj: &mut T)
+    where
+        T: Friable,
+    {
         obj.cook();
     }
 }
@@ -48,7 +54,7 @@ enum CarrotState {
     Raw,
     Cooked,
     Fried,
-    Burnt
+    Burnt,
 }
 
 trait Edible {
@@ -68,8 +74,8 @@ impl Heatable for Pie {
 impl Heatable for Carrot {
     fn cook(&mut self) {
         match self.state {
-            CarrotState::Raw => {self.state = Cooked}
-            _ => {self.state = Burnt}
+            CarrotState::Raw => self.state = Cooked,
+            _ => self.state = Burnt,
         }
     }
 }
@@ -77,9 +83,9 @@ impl Heatable for Carrot {
 impl Friable for Carrot {
     fn cook(&mut self) {
         match self.state {
-            CarrotState::Fried => {self.state = Burnt}
+            CarrotState::Fried => self.state = Burnt,
             Burnt => {}
-            _ => {self.state = Fried}
+            _ => self.state = Fried,
         }
     }
 }
@@ -87,8 +93,12 @@ impl Friable for Carrot {
 impl Edible for Pie {
     fn eat(&self) {
         match self.ready {
-            true => {println!("yummy")}
-            false => {println!("you got stomach ache")}
+            true => {
+                println!("yummy")
+            }
+            false => {
+                println!("you got stomach ache")
+            }
         }
     }
 }
@@ -96,30 +106,38 @@ impl Edible for Pie {
 impl Edible for Carrot {
     fn eat(&self) {
         match self.state {
-            CarrotState::Raw => {println!("mmh, crunchy")}
-            Cooked => {println!("mmh, yummy")}
-            Fried => {println!("mmh, crispy")}
-            Burnt => {println!("blah, burnt")}
+            CarrotState::Raw => {
+                println!("mmh, crunchy")
+            }
+            Cooked => {
+                println!("mmh, yummy")
+            }
+            Fried => {
+                println!("mmh, crispy")
+            }
+            Burnt => {
+                println!("blah, burnt")
+            }
         }
     }
 }
 
 pub fn food_main() {
-    let mut carrot1 : Carrot = Carrot{state: Raw};
-    let mut carrot2 : Carrot = Carrot{state: Fried};
+    let mut carrot1: Carrot = Carrot { state: Raw };
+    let mut carrot2: Carrot = Carrot { state: Fried };
     carrot1.eat();
     carrot2.eat();
 
-    let frier : Pan = Pan{};
+    let frier: Pan = Pan {};
     frier.fry(&mut carrot1);
     frier.fry(&mut carrot2);
     carrot1.eat();
     carrot2.eat();
 
-    let mut pie : Pie = Pie{ready: false};
-    let mut carrot3 : Carrot = Carrot{state: Cooked};
+    let mut pie: Pie = Pie { ready: false };
+    let mut carrot3: Carrot = Carrot { state: Cooked };
     pie.eat();
-    let oven : Oven = Oven{};
+    let oven: Oven = Oven {};
     oven.heat(&mut carrot3);
     oven.heat(&mut pie);
     pie.eat();

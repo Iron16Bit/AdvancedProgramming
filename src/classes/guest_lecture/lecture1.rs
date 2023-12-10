@@ -1,17 +1,18 @@
 use std::marker::PhantomData;
 
-struct User<const R: Role> {    //R is a value of type Role, which is u8
+struct User<const R: Role> {
+    //R is a value of type Role, which is u8
     //_role: PhantomData<R>;
 }
 
 fn f() {
     //Since Role is a u8, we can directly use a u8
-    let u1 : User<1> = User{};
-    let u1 : User<2> = User{};
-    let u1 : User<20> = User{};
+    let u1: User<1> = User {};
+    let u1: User<2> = User {};
+    let u1: User<20> = User {};
 }
 
-trait Yes{}
+trait Yes {}
 
 struct Implied<const Left: Role, const Right: Role> {}
 
@@ -22,15 +23,24 @@ impl Yes for Implied<SuperUser, SuperUser> {}
 impl Yes for Implied<SuperUser, RegUser> {}
 impl Yes for Implied<RegUser, RegUser> {}
 
-impl<const R: Role> User<R> where Implied<R, RegUser>: Yes {
+impl<const R: Role> User<R>
+where
+    Implied<R, RegUser>: Yes,
+{
     fn reg_user_thing(&self) {}
 }
 
-impl<const R: Role> User<R> where Implied<R, SuperUser>: Yes {
+impl<const R: Role> User<R>
+where
+    Implied<R, SuperUser>: Yes,
+{
     fn sup_user_thing(&self) {}
 }
 
-impl<const R: Role> User<R> where Implied<R, Admin>: Yes {
+impl<const R: Role> User<R>
+where
+    Implied<R, Admin>: Yes,
+{
     fn admin_thing(&self) {}
 }
 
@@ -52,18 +62,18 @@ const RegUser: u8 = 0;
 type Role = u8;
 
 pub fn main() {
-    let user1: User<RegUser> = User{};
+    let user1: User<RegUser> = User {};
     user1.reg_user_thing();
 
-    let user2: User<SuperUser> = User{};
+    let user2: User<SuperUser> = User {};
     user2.reg_user_thing();
     user2.sup_user_thing();
 
-    let user3: User<Admin> = User{};
+    let user3: User<Admin> = User {};
     user3.reg_user_thing();
     user3.sup_user_thing();
     user3.admin_thing();
 
-    let no_user: User<99> = User{};
+    let no_user: User<99> = User {};
     no_user.pub_thing();
 }

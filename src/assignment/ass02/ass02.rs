@@ -1,16 +1,16 @@
 use std::collections::HashMap;
 use std::slice::Iter;
 
-pub fn modify_odd(arr : &mut [i32]) {
+pub fn modify_odd(arr: &mut [i32]) {
     for n in arr {
-        if *n%2 != 0 {
+        if *n % 2 != 0 {
             *n = 0;
         }
     }
 }
 
 pub fn create_vec() {
-    let mut v : Vec<i32> = Vec::new();
+    let mut v: Vec<i32> = Vec::new();
     let mut i = 0;
     while i <= 100 {
         v.push(i);
@@ -22,12 +22,12 @@ pub fn create_vec() {
     println!("{:?}", v);
 }
 
-pub fn count_character(s : String) -> HashMap<char, u32> {
-    let mut ret : HashMap<char, u32> = HashMap::new();
+pub fn count_character(s: String) -> HashMap<char, u32> {
+    let mut ret: HashMap<char, u32> = HashMap::new();
 
     for c in s.chars() {
         if ret.contains_key(&c) {
-            ret.insert(c, *ret.get(&c).unwrap()+1);
+            ret.insert(c, *ret.get(&c).unwrap() + 1);
         } else {
             ret.insert(c, 1);
         }
@@ -35,9 +35,9 @@ pub fn count_character(s : String) -> HashMap<char, u32> {
     return ret;
 }
 
-pub fn split_at_value(slice : &[i32], value : i32) -> Option<(&[i32], &[i32])> {
-    let mut done : bool = false;
-    let mut index : usize = 0;
+pub fn split_at_value(slice: &[i32], value: i32) -> Option<(&[i32], &[i32])> {
+    let mut done: bool = false;
+    let mut index: usize = 0;
     for n in slice {
         if !done {
             if value == *n {
@@ -53,21 +53,20 @@ pub fn split_at_value(slice : &[i32], value : i32) -> Option<(&[i32], &[i32])> {
         let ret: Option<(&[i32], &[i32])> = Option::from((a, b));
         return ret;
     } else {
-        let ret : Option<(&[i32], &[i32])> = Option::None;
+        let ret: Option<(&[i32], &[i32])> = Option::None;
         return ret;
     }
 }
 
 pub fn sub_slice(a: &Vec<i32>, b: &Vec<i32>) {
-
-    let mut start : usize = a.len()+1;
-    let mut finish : usize = a.len()+1;
+    let mut start: usize = a.len() + 1;
+    let mut finish: usize = a.len() + 1;
 
     for a_n in 0..a.len() {
         if a[a_n] == b[0] {
-            let mut found : bool = true;
+            let mut found: bool = true;
             for b_n in 0..b.len() {
-                if a_n+b_n >= a.len() || b[b_n] != a[a_n+b_n] {
+                if a_n + b_n >= a.len() || b[b_n] != a[a_n + b_n] {
                     found = false;
                 }
             }
@@ -82,13 +81,13 @@ pub fn sub_slice(a: &Vec<i32>, b: &Vec<i32>) {
     if finish > a.len() {
         println!("Not found");
     } else {
-        let ret : &[i32] = &a[start..finish];
+        let ret: &[i32] = &a[start..finish];
         println!("{:?}", ret);
     }
 }
 
 pub fn max(v: &Vec<i32>) -> i32 {
-    let mut ret : i32 = i32::MIN;
+    let mut ret: i32 = i32::MIN;
     for n in v {
         if *n > ret {
             ret = *n;
@@ -100,13 +99,13 @@ pub fn max(v: &Vec<i32>) -> i32 {
 
 pub fn swap(v: &mut Vec<i32>) {
     let len = v.len();
-    v.swap(0, len-1);
+    v.swap(0, len - 1);
 }
 
 pub fn is_sorted(v: &Vec<i32>) -> bool {
-    let mut index : usize = 0;
-    while index < v.len()-1 {
-        if v[index] < v[index+1] {
+    let mut index: usize = 0;
+    while index < v.len() - 1 {
+        if v[index] < v[index + 1] {
             return false;
         }
     }
@@ -122,7 +121,7 @@ pub fn insert_if_longer(mut vec: Vec<String>, string: String) -> Vec<String> {
 }
 
 pub fn build_vector(iter: Iter<i32>) -> Vec<&i32> {
-    let mut ret : Vec<&i32> = Vec::new();
+    let mut ret: Vec<&i32> = Vec::new();
     for n in iter {
         ret.push(n);
     }
@@ -141,10 +140,10 @@ pub fn flip(vec: &mut Vec<i32>, i: i32) {
 }
 
 pub fn pancake_sorting(vec: &mut Vec<i32>) {
-    let mut end : usize = vec.len()-1;
+    let mut end: usize = vec.len() - 1;
     while end > 0 {
         let mut max = i32::MIN;
-        let mut max_pos : usize = 0;
+        let mut max_pos: usize = 0;
         for i in 0..end {
             if vec[i] > max {
                 max = *vec.get(i).unwrap();
@@ -152,15 +151,15 @@ pub fn pancake_sorting(vec: &mut Vec<i32>) {
             }
         }
         flip(vec, max_pos as i32);
-        flip(vec, (end-1) as i32);
+        flip(vec, (end - 1) as i32);
         end -= 1;
     }
 }
 
 pub fn merge(a: &[i32], b: &[i32]) -> Vec<i32> {
-    let mut vec : Vec<i32> = Vec::new();
-    let mut index_a : usize = 0;
-    let mut index_b : usize = 0;
+    let mut vec: Vec<i32> = Vec::new();
+    let mut index_a: usize = 0;
+    let mut index_b: usize = 0;
     while index_a < a.len() && index_b < b.len() {
         if a[index_a] < b[index_b] {
             vec.push(a[index_a]);
@@ -185,14 +184,13 @@ pub fn merge(a: &[i32], b: &[i32]) -> Vec<i32> {
 }
 
 pub fn new_vec() {
-
     #[derive(Debug)]
     enum VecValue {
         Num(i32),
         Str(String),
     }
 
-    let mut vec : Vec<VecValue> = Vec::new();
+    let mut vec: Vec<VecValue> = Vec::new();
     vec.push(VecValue::Num(33));
     vec.push(VecValue::Str(String::from("Trentini")));
     vec.push(VecValue::Str(String::from("Entrarono a Trento tutti e")));
@@ -236,18 +234,17 @@ pub fn evaluate_expression(e: Expression) -> Result<i32, String> {
             let left = evaluate_expression(*l)?;
             let right = evaluate_expression(*r)?;
             match op {
-                Operation::Add => {return Result::Ok(left+right)}
-                Operation::Sub => {return Result::Ok(left-right)}
-                Operation::Mul => {return Result::Ok(left*right)}
+                Operation::Add => return Result::Ok(left + right),
+                Operation::Sub => return Result::Ok(left - right),
+                Operation::Mul => return Result::Ok(left * right),
                 Operation::Div => {
                     if right == 0 {
                         return Result::Err(String::from("Division by 0"));
                     } else {
-                        return Result::Ok(left/right)
+                        return Result::Ok(left / right);
                     }
                 }
             }
         }
     }
 }
-

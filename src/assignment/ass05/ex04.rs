@@ -14,13 +14,17 @@ pub struct Task {
 
 impl Task {
     pub(crate) fn new(name: String, priority: i32, done: bool) -> Self {
-        return Task{name, priority, done}
+        return Task {
+            name,
+            priority,
+            done,
+        };
     }
 }
 
 impl Tasks {
     pub(crate) fn new() -> Self {
-        return Tasks{tasks: Vec::new()}
+        return Tasks { tasks: Vec::new() };
     }
 
     pub fn push(&mut self, t: Task) {
@@ -35,10 +39,12 @@ impl Tasks {
     }
 }
 
-impl Iterator for Tasks{
+impl Iterator for Tasks {
     type Item = Task;
     fn next(&mut self) -> Option<Self::Item> {
-        return self.tasks.iter() //Iter through the tasks
+        return self
+            .tasks
+            .iter() //Iter through the tasks
             .position(|task| !task.done) //Puts the Task we're iterating on in task and checks if the condition is verified. If so, returns its index
             .map(|task| self.tasks.remove(task)); //Takes that index and removes that value
     }

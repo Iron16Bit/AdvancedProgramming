@@ -1,7 +1,7 @@
+use crate::assignment::ass05::ex02::Category::{ACTION, COMEDY, HORROR};
+use rand::{random, thread_rng, Rng};
 use std::os::unix::raw::nlink_t;
 use std::panic::resume_unwind;
-use rand::{random, Rng, thread_rng};
-use crate::assignment::ass05::ex02::Category::{ACTION, COMEDY, HORROR};
 
 #[derive(Debug)]
 struct Book {
@@ -19,17 +19,17 @@ enum Category {
 
 #[derive(Debug, Default)]
 pub struct Library {
-    bookcase: [Vec<Book>; 10]
+    bookcase: [Vec<Book>; 10],
 }
 
 impl Default for Book {
     fn default() -> Self {
         let mut cat = Category::ACTION;
-        let rng : u32 = random::<u32>()%3;
+        let rng: u32 = random::<u32>() % 3;
         match rng {
-            0 => {cat = ACTION}
-            1 => {cat = HORROR}
-            _ => {cat = COMEDY}
+            0 => cat = ACTION,
+            1 => cat = HORROR,
+            _ => cat = COMEDY,
         }
 
         let mut gen = rand::thread_rng();
@@ -40,7 +40,10 @@ impl Default for Book {
             title.push(random_char as char);
         }
 
-        return Book{title: title, cat: cat}
+        return Book {
+            title: title,
+            cat: cat,
+        };
     }
 }
 
@@ -54,7 +57,10 @@ impl Book {
             title.push(random_char as char);
         }
 
-        return Book{title: title, cat: cat}
+        return Book {
+            title: title,
+            cat: cat,
+        };
     }
 }
 

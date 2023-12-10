@@ -21,26 +21,35 @@ pub struct Rectangle {
 
 impl Default for Point {
     fn default() -> Self {
-        return Point{x: 0, y: 0}
+        return Point { x: 0, y: 0 };
     }
 }
 
 impl Default for Circle {
     fn default() -> Self {
-        return Circle{radius: 1, center: Point::default()}
+        return Circle {
+            radius: 1,
+            center: Point::default(),
+        };
     }
 }
 
 impl Default for Rectangle {
     fn default() -> Self {
-        return  Rectangle{top_left: Point{x: -1, y: 1}, bottom_right: Point{x: 1, y: -1}}
+        return Rectangle {
+            top_left: Point { x: -1, y: 1 },
+            bottom_right: Point { x: 1, y: -1 },
+        };
     }
 }
 
 impl Add for Point {
     type Output = Self;
     fn add(self, rhs: Self) -> Self::Output {
-        return Point{x: self.x + rhs.x, y: self.y + rhs.y}
+        return Point {
+            x: self.x + rhs.x,
+            y: self.y + rhs.y,
+        };
     }
 }
 
@@ -48,7 +57,10 @@ impl Sub for Point {
     type Output = Self;
 
     fn sub(self, rhs: Self) -> Self::Output {
-        return Point{x: self.x - rhs.x, y: self.y - rhs.y}
+        return Point {
+            x: self.x - rhs.x,
+            y: self.y - rhs.y,
+        };
     }
 }
 
@@ -58,7 +70,7 @@ pub struct Area {
 
 impl Default for Area {
     fn default() -> Self {
-        return Area{area: 0.0};
+        return Area { area: 0.0 };
     }
 }
 
@@ -81,7 +93,9 @@ impl GetArea<Point> for Point {
 impl GetArea<Circle> for Circle {
     fn get_area(&self) -> Area {
         let pi = 3.14;
-        return Area{area: (self.radius as f32) * 2.0 * pi}
+        return Area {
+            area: (self.radius as f32) * 2.0 * pi,
+        };
     }
 }
 
@@ -93,14 +107,18 @@ impl GetArea<Rectangle> for Rectangle {
         let mut height = self.top_left.y - self.bottom_right.y;
         height = height.abs();
 
-        return Area{area: (base * height) as f32}
+        return Area {
+            area: (base * height) as f32,
+        };
     }
 }
 
 impl Add for Area {
     type Output = Self;
     fn add(self, rhs: Self) -> Self::Output {
-        return Area{area: self.area + rhs.area}
+        return Area {
+            area: self.area + rhs.area,
+        };
     }
 }
 
@@ -108,16 +126,18 @@ impl<T> Add<&dyn GetArea<T>> for Area {
     type Output = Self;
 
     fn add(self, rhs: &dyn GetArea<T>) -> Self::Output {
-        return Area{area: self.area + rhs.get_area().area}
+        return Area {
+            area: self.area + rhs.get_area().area,
+        };
     }
 }
 
 pub fn sum_area<T>(a: &[&dyn GetArea<T>]) -> Area {
-    let mut val : f32 = 0.0;
+    let mut val: f32 = 0.0;
     for f in a.iter() {
         val += f.get_area().area;
     }
-    return Area{area: val};
+    return Area { area: val };
 }
 
 // fn main() {
