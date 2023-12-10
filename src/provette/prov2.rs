@@ -1,7 +1,78 @@
-//Es_1:
+use std::borrow::Borrow;
+use std::{fmt::Debug, ops::Add};
 
+//Ex_1
+mod odd_module {
+    pub(crate) const CONSTANT: i32 = 123;
+}
+
+mod even_module {
+    pub(crate) const CONSTANT: i32 = 246;
+}
+
+mod getter_function {
+    use super::even_module;
+    use super::odd_module;
+    pub fn get_constant(value: u32) -> i32 {
+        if value % 2 == 0 {
+            return even_module::CONSTANT;
+        } else {
+            return odd_module::CONSTANT;
+        }
+    }
+}
+
+//Ex_2:
+trait CloneAndDouble {
+    fn clone_and_double(&self) -> Self;
+}
+
+impl<T: Clone + Add<Output = T>> CloneAndDouble for T {
+    fn clone_and_double(&self) -> Self {
+        return self.clone() + self.clone()
+    }
+}
+
+//Ex_3
+trait Unknown {
+    fn serialize(&self) -> String;
+}
+
+impl Unknown for i32 {
+    fn serialize(&self) -> String {
+        i32::to_string(self)
+    }
+}
+
+impl Unknown for String {
+    fn serialize(&self) -> String {
+        self.clone()
+    }
+}
+
+impl<T: Debug> Unknown for Vec<T> {
+    fn serialize(&self) -> String {
+        let mut ret_val = String::new();
+        for item in self.iter() {
+            ret_val.push_str(format!("{:?}", item).as_str());
+        }
+        return ret_val;
+    }
+}
+
+fn get_vec() -> Vec<Box<dyn Unknown>> {
+    vec![]
+}
+
+fn print_vec(vec: &Vec<Box<dyn Unknown>>) {
+    for item in vec.iter() {
+        println!("{}", item.serialize());
+    }
+}
+
+//Ex_4:
 use std::cell::RefCell;
-use std::fmt::{Debug, Display, Formatter};
+use std::fmt::{Display, Formatter};
 use std::ops::Deref;
 use std::rc::Rc;
 
@@ -52,85 +123,46 @@ pub fn test1() {
     }
 }
 
-//Es_2
+// Ex_5
 struct Node<T> {
     element: T,
     prev: Option<Rc<RefCell<Node<T>>>>,
-    next: Option<Rc<RefCell<Node<T>>>>
+    next: Option<Rc<RefCell<Node<T>>>>,
 }
 
 struct List<T> {
     head: Option<Rc<RefCell<Node<T>>>>,
     tail: Option<Rc<RefCell<Node<T>>>>,
-    size: usize
+    size: usize,
 }
 
-impl<T: PartialEq> PartialEq for Node<T> {
+impl<T> PartialEq for Node<T> 
+where T: PartialEq{
     fn eq(&self, other: &Self) -> bool {
-        return self.element == other.element
+        self.element == other.element
     }
 }
 
-impl<T: Debug> Display for Node<T> {
+impl<T> Display for Node<T> 
+where T: Display {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{:?}", &self.element)
+        write!(f, "{}", self.element)
     }
 }
 
-impl<T: PartialEq> PartialEq for List<T> {
+impl<T> PartialEq for List<T> {
     fn eq(&self, other: &Self) -> bool {
-        if self.size != other.size {
-            return false
-        } else if self.size > 0{
-            let mut iter = self.size.clone();
-            let mut l1 = self.head.as_ref().unwrap().clone().borrow();
-            let mut l2 = other.head.as_ref().unwrap().clone().borrow();
-            while iter > 0 {
-                if l1.element != l2.element {
-                    return false
-                }
-                l1 = l1.next.as_ref().unwrap().clone().borrow();
-                l2 = l2.next.as_ref().unwrap().clone().borrow();
-                iter -= 1;
-            }
-            if l1.element != l2.element {
-                return false
-            } else {
-                return true
-            }
-        } else {
-            return false
-        }
-    }
-}
+        let mut self_iter = self.head.as_ref().map(|node| Rc::clone(node));
+        let mut other_iter = other.head.as_ref().map(|node| Rc::clone(node));
 
-impl<T: Debug> Display for List<T> {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        let mut l = self.head.unwrap().borrow_mut();
-        let mut iter = self.size.clone();
-        let mut str = String::new();
-
-        while iter > 0 {
-            iter -= 1;
-            str += &format!("{}", l);
-            l = l.next.as_ref().unwrap().borrow_mut();
+        while let (Some(node1), Some(node2)) = (self_iter.iter().clone(), other_iter.iter().clone()) {
+            if node1.borrow().element != node2.borrow().element {
+                return false;
+            }
+            self_iter = node1.borrow().next.as_ref().map(|node| Rc::clone(node));
+            other_iter = node2.borrow().next.as_ref().map(|node| Rc::clone(node));
         }
 
-        str += &format!("{}", l);
-        write!(f, "{}", str)
-    }
-}
-
-impl<T: Debug> List<T> {
-    fn new() -> Self {
-        return List{head: None, tail: None, size: 0}
-    }
-
-    fn print_list(&self) {
-        println!("{}", self)
-    }
-
-    fn push(&mut self, element: T) {
-        let n = Node{element, prev: None, next: self.head.clone()};
+        self_iter.is_none() && other_iter.is_none()
     }
 }

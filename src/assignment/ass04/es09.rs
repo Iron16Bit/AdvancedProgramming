@@ -136,7 +136,7 @@ pub fn sudo_change_permission(user: &mut User, string: String, permission: Permi
 #[cfg(test)]
 mod tests {
     use std::collections::HashMap;
-    use crate::assignment::ass04_longer::es09::{Actions, Auth, Permission, Role, sudo_change_permission, User};
+    use crate::assignment::ass04::es09::{Actions, Auth, Permission, Role, sudo_change_permission, User};
 
     fn create_user_action_for_testing() -> Vec<Actions> {
         vec![
