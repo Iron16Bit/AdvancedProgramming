@@ -1,7 +1,7 @@
 mod assignment;
 mod classes;
-mod provette;
+mod midterm;
 
 fn main() {
-    provette::prov2::test1();
+    midterm::midterm2_graph_v2::test4();
 }

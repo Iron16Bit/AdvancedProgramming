@@ -1,4 +1,4 @@
-use crate::provette::prov1::AirplaneCompany::Boeing;
+use crate::midterm::midterm1::AirplaneCompany::Boeing;
 use std::fmt;
 use std::fmt::{write, Formatter};
 
@@ -272,7 +272,7 @@ mod unumber {
 }
 
 mod hashmaps {
-    use crate::provette::prov1::unumber::Unumber;
+    use crate::midterm::midterm1::unumber::Unumber;
     use std::collections::HashMap;
 
     pub struct Maps {
@@ -282,7 +282,7 @@ mod hashmaps {
 
 pub mod module {
     use super::hashmaps;
-    use crate::provette::prov1::unumber::Unumber;
+    use crate::midterm::midterm1::unumber::Unumber;
     use std::collections::HashMap;
     pub fn string_to_tuple(m: hashmaps::Maps) -> HashMap<Unumber, (Unumber, String)> {
         let mut ret = HashMap::new();
